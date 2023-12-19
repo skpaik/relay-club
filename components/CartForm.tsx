@@ -36,9 +36,12 @@ export function CartForm({session}: Props) {
     useEffect(() => {
         (async function () {
             try {
-                setSubTotal(421);
-                setDiscount(422);
-                setTotal(423);
+                const subTotal=cartItems?.reduce((sum, item)=>sum+item.quantity*item.unit_price, 0);
+                const discount=109.5;
+
+                setSubTotal(subTotal);
+                setDiscount(discount);
+                setTotal(subTotal-discount);
             } catch (error: any) {
                 //setError(error)
             } finally {
@@ -96,12 +99,12 @@ export function CartForm({session}: Props) {
                 <div className="pt-4 space-y-2">
                     <div className="flex justify-between">
                         <span>Subtotal</span>
-                        <span>$ {subTotal}</span>
+                        <span>$ {subTotal.toFixed(2)}</span>
                     </div>
                     <div>
                         <div className="flex justify-between">
                             <span>Discount</span>
-                            <span>-${discount}</span>
+                            <span>-${discount.toFixed(2)}</span>
                         </div>
                         <div className="flex items-center space-x-2 text-xs">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
@@ -119,7 +122,7 @@ export function CartForm({session}: Props) {
                     <div className="space-y-6">
                         <div className="flex justify-between">
                             <span>Total</span>
-                            <span className="font-semibold">$ {total}</span>
+                            <span className="font-semibold">$ {total.toFixed(2)}</span>
                         </div>
                         <button type="button"
                                 className="w-full py-2 font-semibold border rounded bg-violet-400 text-gray-900 border-violet-400">Go
