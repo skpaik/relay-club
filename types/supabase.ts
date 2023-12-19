@@ -130,6 +130,26 @@ export interface definitions {
     /** Format: text */
     website?: string;
   };
+  cart: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: string;
+    /** Format: timestamp with time zone */
+    sku: string;
+    /** Format: text */
+    name: string;
+    /** Format: number */
+    quantity: number;
+    /** Format: number */
+    unit_price: number;
+    /** Format: number */
+    total_price?: number;
+    /** Format: text */
+    user_id?: string;
+  };
 }
 
 export interface parameters {

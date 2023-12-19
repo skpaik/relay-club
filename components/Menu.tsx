@@ -13,6 +13,11 @@ export function Menu({ session }: Props) {
       {session ? (
         <>
           <li>
+            <Link href="/cart">
+              <a className="btn-link">Cart</a>
+            </Link>
+          </li>
+          <li>
             <Link href="/profile">
               <a className="btn-link">My profile</a>
             </Link>
@@ -31,6 +36,11 @@ export function Menu({ session }: Props) {
         </>
       ) : (
         <>
+          <li>
+            <Link href="/cart">
+              <a className="btn-link">Cart</a>
+            </Link>
+          </li>
           <li>
             <Link href="/signin">
               <a className="btn-link">Sign in/Sign up</a>
