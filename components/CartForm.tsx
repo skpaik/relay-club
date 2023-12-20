@@ -7,7 +7,7 @@ import {supabase} from '../utils/supabaseClient'
 
 
 export function CartForm({session}: SbSessionProps) {
-    const user: User | null = session?.user;
+    const user: User | null | undefined = session?.user;
     const [offerApplied, setOfferApplied] = useState<string[]>([])
     const [cartItems, setCartItems] = useState<Cart[]>([])
     const [errorMessage, setErrorMessage] = useState('')
@@ -95,11 +95,20 @@ export function CartForm({session}: SbSessionProps) {
 
     useEffect(() => {
         (async function () {
+            let user_id = user?.id;
+            console.log("\nuser_id: " + user_id);
+            if (!user_id) {
+                let user_id_local = localStorage.getItem("user_id");
+                if (user_id_local) {
+                    user_id = user_id_local;
+                }
+            }
+
             try {
                 const {data, error, status} = await supabase
                     .from<Cart>('Cart')
                     .select(`*`)
-                    .eq('user_id', user?.id);
+                    .eq('user_id', user_id);
 
                 console.log(data);
 

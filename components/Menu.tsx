@@ -37,6 +37,11 @@ export function Menu({ session }: Props) {
       ) : (
         <>
           <li>
+            <Link href="/products">
+              <a className="btn-link">Products</a>
+            </Link>
+          </li>
+          <li>
             <Link href="/cart">
               <a className="btn-link">Cart</a>
             </Link>

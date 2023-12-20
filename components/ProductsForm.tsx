@@ -40,6 +40,20 @@ export function ProductsForm({session}: SbSessionProps) {
     const handleAddToCart = async (item: Product) => {
         setCurrentProduct(item);
         setCartAddStatus(false);
+
+        let user_id = user?.id;
+
+        if (!user_id) {
+            let user_id_local = localStorage.getItem("user_id");
+
+            if (!user_id_local) {
+                user_id_local = Math.random().toString(36).substring(3, 12);
+                localStorage.setItem("user_id", user_id_local);
+            }
+
+            user_id = user_id_local;
+        }
+
         try {
             const cart: Cart = {
                 name: item.name,
@@ -47,7 +61,7 @@ export function ProductsForm({session}: SbSessionProps) {
                 unit_price: item.price,
                 quantity: 1,
                 product_id: item?.id,
-                user_id: user?.id
+                user_id: user_id
             };
             const {data, error} = await supabase.from('Cart').insert([cart,]);
 
@@ -69,8 +83,12 @@ export function ProductsForm({session}: SbSessionProps) {
             <div className="container mx-auto p-6  space-y-4 divide-y ">
                 <div className="flex justify-between items-start">
                     <h2 className="text-5xl md:text-6xl font-extrabold text-white mb-6">Products</h2>
-                    <a href={"/products-add"} className="text-2xl md:text-1xl font-extrabold text-white mb-6">Add
-                        products</a>
+                    {user &&
+                        <a href={"/products-add"}
+                           className="text-2xl md:text-1xl font-extrabold text-white mb-6">Add
+                            products
+                        </a>
+                    }
                 </div>
                 {cartAddStatus &&
                     <div role="alert" className="alert alert-success">
@@ -94,9 +112,11 @@ export function ProductsForm({session}: SbSessionProps) {
                                     <span className="text-3xl font-bold text-gray-900 dark:text-white">
                                         ${item.price.toFixed(2)}
                                     </span>
-                                    <Link href={{pathname: '/products-edit', query: {id: item.id}}}>
-                                        <a className="btn">Edit</a>
-                                    </Link>
+                                    {user &&
+                                        <Link href={{pathname: '/products-edit', query: {id: item.id}}}>
+                                            <a className="btn">Edit</a>
+                                        </Link>
+                                    }
                                     <button className="btn" onClick={() => handleAddToCart(item)}>
                                         Add to cart
                                     </button>

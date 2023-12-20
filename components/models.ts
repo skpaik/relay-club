@@ -1,7 +1,7 @@
 import {AuthSession} from "@supabase/supabase-js";
 
 export interface SbSessionProps {
-    session: AuthSession
+    session?: AuthSession
 }
 
 export interface Product {

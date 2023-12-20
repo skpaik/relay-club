@@ -5,8 +5,6 @@ import { useSession } from '../utils/hooks/useSession'
 export default function CartPage() {
   const session = useSession()
 
-  if (!session) return null
-
   return (
     <Layout session={session}>
       <CartForm session={session} />
