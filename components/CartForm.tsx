@@ -1,47 +1,76 @@
-import { AuthSession, User } from '@supabase/supabase-js'
-import { supabase } from '../utils/supabaseClient'
-import { useEffect, useState } from "react";
-import { definitions } from "../types/supabase";
+import {User} from '@supabase/supabase-js'
+import {useEffect, useState} from "react";
+import {SampleData} from "./sample_data";
+import {Cart, PricingRule, SbSessionProps} from "./models";
+import { CheckoutSystem } from "./CheckoutSystem";
 
-export interface Props {
-    session: AuthSession
-}
 
-export interface Cart {
-    id: string
-    sku: string;
-    /** Format: text */
-    name: string;
-    /** Format: number */
-    quantity: number;
-    /** Format: number */
-    unit_price: number;
-    /** Format: number */
-    total_price?: number;
-    /** Format: text */
-    user_id?: string;
-}
-
-export function CartForm({session}: Props) {
+export function CartForm({session}: SbSessionProps) {
     const user: User | null = session?.user;
-    const [cartItems, setCartItems] = useState<Cart[] | null>(null)
+    const [cartItems, setCartItems] = useState<Cart[]>([])
     const [errorMessage, setErrorMessage] = useState('')
     const [subTotal, setSubTotal] = useState<number>(0)
     const [discount, setDiscount] = useState<number>(0)
     const [total, setTotal] = useState<number>(0)
 
-    console.log(user);
-
+    console.log("\nuser?.id: " + user?.id);
 
     useEffect(() => {
+        if (cartItems.length == 0) return;
+
         (async function () {
             try {
-                const subTotal=cartItems?.reduce((sum, item)=>sum+item.quantity*item.unit_price, 0);
-                const discount=109.5;
+                //let pricing_rules_data: PricingRule[] | null = [];
+                let pricing_rules_data: PricingRule[] | null = new SampleData().pricing_rules_data;
 
-                setSubTotal(subTotal);
-                setDiscount(discount);
-                setTotal(subTotal-discount);
+                console.log("cartItems");
+                console.log(cartItems);
+
+                let sku_list: string[] = cartItems.map(item => item.sku);
+
+                console.log("sku_list");
+                console.log(sku_list);
+                console.log(pricing_rules_data);
+
+                /*
+                const {data, error, status} = await supabase
+                    .from<PricingRule>('PricingRule')
+                    .select(`*`)
+                    .in('sku', sku_list);
+
+                console.log("sku_list response");
+                console.log(data);
+
+                if (error && status !== 406) {
+                    throw error
+                }
+
+                pricing_rules_data=data;
+                if (pricing_rules_data) {
+                    //setCartItems(data)
+                }*/
+
+                const checkoutSystem = new CheckoutSystem(pricing_rules_data);
+
+                let new_price_sum: number = 0;
+                let sub_total: number = 0;
+                cartItems.forEach((cartItem, index, array) => {
+                    const new_price = checkoutSystem.applyPricingRule(cartItem.sku, cartItem.unit_price, cartItem.quantity);
+                    //const new_price = checkoutSystem.applyPricingRule2(cartItem);
+
+                    if (new_price) {
+                        cartItem.new_price = new_price;
+                        new_price_sum += new_price;
+                        //new_price_sum += 0;
+                    }
+                    sub_total += cartItem.quantity * cartItem.unit_price;
+                });
+                //const sub_total = cartItems.reduce((sum, item) => sum + item.quantity * item.unit_price, 0);
+                const discount = 10936.5;
+
+                if (sub_total) setSubTotal(sub_total);
+                setDiscount(sub_total - new_price_sum);
+                setTotal(new_price_sum);
             } catch (error: any) {
                 //setError(error)
             } finally {
@@ -50,11 +79,12 @@ export function CartForm({session}: Props) {
         })()
     }, [cartItems])
 
+    /*
     useEffect(() => {
         (async function () {
             try {
                 const {data, error, status} = await supabase
-                    .from<definitions['cart']>('Cart')
+                    .from<Cart>('Cart')
                     .select(`*`)
                     .eq('user_id', user?.id);
 
@@ -74,6 +104,12 @@ export function CartForm({session}: Props) {
             }
         })()
     }, [])
+    */
+
+    useEffect(() => {
+        const sample_data_: Cart[] = new SampleData().cart_data;
+        setCartItems(sample_data_)
+    }, [])
 
     return (
         <div className="min-h-screen bg-gray-900 text-gray-300">
@@ -82,7 +118,7 @@ export function CartForm({session}: Props) {
                     <h2 className="text-5xl md:text-6xl font-extrabold text-white mb-6">My cart items</h2>
                 </div>
                 <ul className="flex flex-col pt-4 space-y-2">
-                    {cartItems?.map((item, index) => (
+                    {cartItems.map((item, index) => (
                         <li key={index} className="flex items-start justify-between">
                             <h3>
                                 {item.name}
