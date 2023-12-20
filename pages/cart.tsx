@@ -1,6 +1,6 @@
-import { Layout } from '../components/Layout'
-import { CartForm } from '../components/CartForm'
-import { useSession } from '../utils/hooks/useSession'
+import { Layout } from '@/components/Layout'
+import { CartForm } from '@/components/CartForm'
+import { useSession } from '@/utils/hooks/useSession'
 
 export default function CartPage() {
   const session = useSession()

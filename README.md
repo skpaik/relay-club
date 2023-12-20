@@ -26,6 +26,9 @@ NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 ```
 
+Copy `docs/supabase/query/sql_query.sql` in Supabase query editor
+Import `docs/supabase/sample-data/*` in Database
+
 Install dependency and run local development server:
 
 ```bash

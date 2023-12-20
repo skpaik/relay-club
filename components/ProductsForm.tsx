@@ -1,7 +1,7 @@
 import {User} from '@supabase/supabase-js'
 import {useEffect, useState} from "react";
-import {Cart, Product, SbSessionProps} from "../src/models";
-import {supabase} from '../utils/supabaseClient'
+import {Cart, Product, SbSessionProps} from "@/src/models";
+import {supabase} from '@/utils/supabaseClient'
 import Link from "next/link";
 
 
@@ -113,8 +113,8 @@ export function ProductsForm({session}: SbSessionProps) {
                                         ${item.price.toFixed(2)}
                                     </span>
                                     {user &&
-                                        <Link href={{pathname: '/products-edit', query: {id: item.id}}}>
-                                            <a className="btn">Edit</a>
+                                        <Link href={{pathname: '/products-edit', query: {id: item.id}}} className="btn">
+                                            Edit
                                         </Link>
                                     }
                                     <button className="btn" onClick={() => handleAddToCart(item)}>

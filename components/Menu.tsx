@@ -1,7 +1,7 @@
 import { AuthSession } from '@supabase/supabase-js'
 import Link from 'next/link'
 import Router from 'next/router'
-import { supabase } from '../utils/supabaseClient'
+import { supabase } from '@/utils/supabaseClient'
 
 export interface Props {
   session: AuthSession | null
@@ -13,14 +13,10 @@ export function Menu({ session }: Props) {
       {session ? (
         <>
           <li>
-            <Link href="/products">
-              <a className="btn-link">Products</a>
-            </Link>
+            <Link href="/products" className="btn-link">Products</Link>
           </li>
           <li>
-            <Link href="/cart">
-              <a className="btn-link">Cart</a>
-            </Link>
+            <Link href="/cart" className="btn-link">Cart</Link>
           </li>
           <li>
             <button
@@ -37,19 +33,13 @@ export function Menu({ session }: Props) {
       ) : (
         <>
           <li>
-            <Link href="/products">
-              <a className="btn-link">Products</a>
-            </Link>
+            <Link href="/products" className="btn-link">Products</Link>
           </li>
           <li>
-            <Link href="/cart">
-              <a className="btn-link">Cart</a>
-            </Link>
+            <Link href="/cart" className="btn-link">Cart</Link>
           </li>
           <li>
-            <Link href="/signin">
-              <a className="btn-link">Sign in/Sign up</a>
-            </Link>
+            <Link href="/signin" className="btn-link">Sign in/Sign up</Link>
           </li>
         </>
       )}

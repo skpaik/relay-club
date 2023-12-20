@@ -1,6 +1,6 @@
-import { Layout } from '../components/Layout'
-import { ProductsEditForm } from '../components/ProductsEditForm'
-import { useSession } from '../utils/hooks/useSession'
+import { Layout } from '@/components/Layout'
+import { ProductsEditForm } from '@/components/ProductsEditForm'
+import { useSession } from '@/utils/hooks/useSession'
 
 export default function ProductsPage() {
   const session = useSession()

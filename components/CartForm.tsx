@@ -1,9 +1,9 @@
 import {User} from '@supabase/supabase-js'
 import {useEffect, useState} from "react";
 //import {SampleData} from "../src/sample_data";
-import {Cart, PricingRule, SbSessionProps} from "../src/models";
-import {CheckoutSystem} from "../src/CheckoutSystem";
-import {supabase} from '../utils/supabaseClient'
+import {Cart, PricingRule, SbSessionProps} from "@/src/models";
+import {CheckoutSystem} from "@/src/CheckoutSystem";
+import {supabase} from '@/utils/supabaseClient'
 import Router from "next/router";
 
 

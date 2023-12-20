@@ -1,8 +1,8 @@
 import Router from 'next/router'
 import { useEffect } from 'react'
-import { Layout } from '../components/Layout'
-import { SigninForm } from '../components/SigninForm'
-import { useSession } from '../utils/hooks/useSession'
+import { Layout } from '@/components/Layout'
+import { SigninForm } from '@/components/SigninForm'
+import { useSession } from '@/utils/hooks/useSession'
 
 export default function SigninPage() {
   const session = useSession()
