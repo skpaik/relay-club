@@ -5,7 +5,7 @@ export interface SbSessionProps {
 }
 
 export interface Cart {
-    id: number
+    id?: number
     sku: string;
     /** Format: text */
     name: string;
