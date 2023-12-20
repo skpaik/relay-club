@@ -16,7 +16,6 @@ export function CartForm({session}: SbSessionProps) {
     const [discount, setDiscount] = useState<number>(0)
     const [total, setTotal] = useState<number>(0)
 
-    console.log("\nuser?.id: " + user?.id);
 
     useEffect(() => {
         if (cartItems.length == 0) return;
@@ -26,14 +25,10 @@ export function CartForm({session}: SbSessionProps) {
                 let pricing_rules_data: PricingRule[] | null = [];
                 //let pricing_rules_data: PricingRule[] | null = new SampleData().pricing_rules_data;
 
-                console.log("cartItems");
-                console.log(cartItems);
 
                 let sku_list: string[] = cartItems.map(item => item.sku);
 
-                console.log("sku_list");
-                console.log(sku_list);
-                console.log(pricing_rules_data);
+
 
 
                 const {data, error, status} = await supabase
@@ -41,8 +36,7 @@ export function CartForm({session}: SbSessionProps) {
                     .select(`*`)
                     .in('sku', sku_list);
 
-                console.log("sku_list response");
-                console.log(data);
+
 
                 if (error && status !== 406) {
                     throw error
@@ -71,17 +65,11 @@ export function CartForm({session}: SbSessionProps) {
                 if (sub_total) setSubTotal(sub_total);
                 setDiscount(sub_total - new_price_sum);
                 setTotal(new_price_sum);
-                console.log("subTotal");
-                console.log(subTotal);
-                console.log("discount");
-                console.log(discount);
-                console.log("total");
-                console.log(total);
+
+                setOfferApplied(checkoutSystem.get_offer_applied());
+
                 const get_cart_items = checkoutSystem.get_cart_items();
-                const get_offer_applied = checkoutSystem.get_offer_applied();
-                setOfferApplied(get_offer_applied);
-                console.log("\nget_offer_applied");
-                console.log(get_offer_applied);
+
                 if (get_cart_items.length != cartItems.length) {
                     setCartItems(get_cart_items);
                 }
@@ -97,7 +85,7 @@ export function CartForm({session}: SbSessionProps) {
     useEffect(() => {
         (async function () {
             let user_id = user?.id;
-            console.log("\nuser_id: " + user_id);
+
             if (!user_id) {
                 let user_id_local = localStorage.getItem("user_id");
                 if (user_id_local) {
@@ -111,7 +99,6 @@ export function CartForm({session}: SbSessionProps) {
                     .select(`*`)
                     .eq('user_id', user_id);
 
-                console.log(data);
 
                 if (error && status !== 406) {
                     throw error
@@ -128,15 +115,6 @@ export function CartForm({session}: SbSessionProps) {
             }
         })()
     }, [])
-    /*
-    useEffect(() => {
-        const sample_data_: Cart[] = new SampleData().cart_data;
-
-        const cart_data = new CheckoutSystem2([]).mergeCartItems(sample_data_);
-
-        setCartItems(cart_data)
-    }, [])
-*/
     const handleClearCart = async () => {
         cartItems.forEach((cartItem, index, array) => {
             (async function () {
