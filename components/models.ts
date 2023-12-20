@@ -4,6 +4,16 @@ export interface SbSessionProps {
     session: AuthSession
 }
 
+export interface Product {
+    id: number
+    sku: string;
+    /** Format: text */
+    name: string;
+    /** Format: number */
+    price: number;
+    /** Format: number */
+    quantity: number;
+}
 export interface Cart {
     id?: number
     sku: string;
@@ -17,6 +27,7 @@ export interface Cart {
     total_price?: number | 0;
     /** Format: text */
     user_id?: string;
+    product_id: number;
     new_price?: number | 0;
 }
 

@@ -13,13 +13,13 @@ export function Menu({ session }: Props) {
       {session ? (
         <>
           <li>
-            <Link href="/cart">
-              <a className="btn-link">Cart</a>
+            <Link href="/products">
+              <a className="btn-link">Products</a>
             </Link>
           </li>
           <li>
-            <Link href="/profile">
-              <a className="btn-link">My profile</a>
+            <Link href="/cart">
+              <a className="btn-link">Cart</a>
             </Link>
           </li>
           <li>

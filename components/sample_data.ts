@@ -123,7 +123,113 @@ export class SampleData {
             "total_price": null,
             "user_id": "cda07575-0452-4307-877f-9d6d3bfe9448"
         }];
-    cart_data: Cart[] = this.cart_data_5;
+    cart_data_6: Cart[] = [
+        {
+            "id": 2,
+            "created_at": "2023-12-20T18:28:03.492735+00:00",
+            "sku": "ipd",
+            "name": "Super iPad",
+            "quantity": 1,
+            "unit_price": 549.99,
+            "total_price": null,
+            "user_id": "cda07575-0452-4307-877f-9d6d3bfe9448",
+            "product_id": 4
+        },
+        {
+            "id": 3,
+            "created_at": "2023-12-20T18:38:06.146316+00:00",
+            "sku": "mbp",
+            "name": "Product Nam2",
+            "quantity": 1,
+            "unit_price": 23,
+            "total_price": null,
+            "user_id": "cda07575-0452-4307-877f-9d6d3bfe9448",
+            "product_id": 3
+        },
+        {
+            "id": 4,
+            "created_at": "2023-12-20T18:41:59.985806+00:00",
+            "sku": "mbp",
+            "name": "Product Nam2",
+            "quantity": 1,
+            "unit_price": 23,
+            "total_price": null,
+            "user_id": "cda07575-0452-4307-877f-9d6d3bfe9448",
+            "product_id": 3
+        },
+        {
+            "id": 5,
+            "created_at": "2023-12-20T18:43:40.884202+00:00",
+            "sku": "mbp",
+            "name": "MacBook Pro",
+            "quantity": 1,
+            "unit_price": 1399.99,
+            "total_price": null,
+            "user_id": "cda07575-0452-4307-877f-9d6d3bfe9448",
+            "product_id": 5
+        },
+        {
+            "id": 6,
+            "created_at": "2023-12-20T18:44:27.683134+00:00",
+            "sku": "vga",
+            "name": "VGA adapter",
+            "quantity": 1,
+            "unit_price": 30,
+            "total_price": null,
+            "user_id": "cda07575-0452-4307-877f-9d6d3bfe9448",
+            "product_id": 7
+        },
+        {
+            "id": 7,
+            "created_at": "2023-12-20T18:44:30.246648+00:00",
+            "sku": "mbp",
+            "name": "MacBook Pro",
+            "quantity": 1,
+            "unit_price": 1399.99,
+            "total_price": null,
+            "user_id": "cda07575-0452-4307-877f-9d6d3bfe9448",
+            "product_id": 5
+        }
+    ];
+    cart_data_7: Cart[] = [
+        {
+            "sku": "ipd",
+            "name": "Super iPad",
+            "quantity": 1,
+            "product_id": 4
+        },
+        {
+            "sku": "mbp",
+            "name": "Product Nam2",
+            "quantity": 1,
+            "product_id": 3
+        },
+        {
+            "sku": "mbp",
+            "name": "Product Nam2",
+            "quantity": 1,
+            "product_id": 3
+        },
+        {
+            "sku": "mbp",
+            "name": "MacBook Pro",
+            "quantity": 1,
+            "product_id": 5
+        },
+        {
+            "sku": "vga",
+            "name": "VGA adapter",
+            "quantity": 1,
+            "product_id": 7
+        },
+        {
+            "sku": "mbp",
+            "name": "MacBook Pro",
+            "quantity": 1,
+            "product_id": 5
+        }
+    ];
+    cart_data: Cart[] = this.cart_data_6;
 
 
     pricing_rules_data: PricingRules[] = this.pricing_rules;

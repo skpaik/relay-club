@@ -3,6 +3,7 @@ import {Cart, PricingRule} from "./models";
 export class CheckoutSystem2 {
     private pricingRules: PricingRule[] = [];
     private cart: Cart[] = [];
+    private offerApplied: string[] = [];
 
     constructor(pricingRules: PricingRule[]) {
         this.pricingRules = pricingRules;
@@ -14,6 +15,16 @@ export class CheckoutSystem2 {
 
     get_cart_items(): Cart[] {
         return this.cart;
+    }
+
+    get_offer_applied(): string[] {
+        return this.offerApplied;
+    }
+
+    set_offer_applied(offer: string | undefined): void {
+        if (offer != null && this.offerApplied.indexOf(offer) === -1) {
+            this.offerApplied.push(offer);
+        }
     }
 
     applyPricingRules(): number {
@@ -32,6 +43,7 @@ export class CheckoutSystem2 {
                         // Apply 3 for 2 deal for Apple TV
                         const discountedQuantity = Math.floor(cartItem.quantity / 3) * 2 + (cartItem.quantity % 3);
                         totalPrice = discountedQuantity * cartItem.unit_price;
+                        this.set_offer_applied(rule.rule_details)
                         break;
 
                     case 'Bulk discount':
@@ -44,6 +56,7 @@ export class CheckoutSystem2 {
                         totalPrice += cartItem.quantity >= 4 ? cartItem.quantity * parseFloat(rule.price_detail || '0') : cartItem.quantity * cartItem.unit_price;
                         console.log("\n\ntotalPrice after")
                         console.log(totalPrice)
+                        this.set_offer_applied(rule.rule_details)
                         break;
 
                     case 'Bundle deal':
@@ -69,16 +82,23 @@ export class CheckoutSystem2 {
                                 console.log("\n!vgaAdapterInCart2")
                                 console.log(this.cart)
                                 // Add the free VGA adapter to the cart
-                                const vgaAdapter: Cart = {sku: 'vga', name: 'VGA adapter', unit_price: 0, quantity: 1};
+                                const vgaAdapter: Cart = {
+                                    sku: 'vga',
+                                    name: 'VGA adapter',
+                                    unit_price: 0,
+                                    quantity: cartItem.quantity,
+                                    product_id: 1
+                                };
                                 this.cart.push(vgaAdapter);
-                            }else{
-                                vgaAdapterInCart.unit_price=0;
+                            } else {
+                                vgaAdapterInCart.unit_price = 0;
                             }
                             console.log(this.cart)
                         } else {
                             // For other products, simply add the regular price to the total
                             totalPrice += cartItem.unit_price;
                         }
+                        this.set_offer_applied(rule.rule_details)
                         break;
 
                     // Add other cases for different pricing rules as needed
@@ -95,6 +115,28 @@ export class CheckoutSystem2 {
 
         return totalPrice;
     }
+
+    mergeCartItems(cartItems: Cart[]): Cart[] {
+        const mergedProducts: Record<number, Cart> = {};
+
+        for (const cartItem of cartItems) {
+            const existingProduct = mergedProducts[cartItem.product_id];
+
+            if (existingProduct) {
+                // If the product with the same product_id already exists, update the quantity
+                mergedProducts[cartItem.product_id] = {
+                    ...existingProduct,
+                    quantity: existingProduct.quantity + cartItem.quantity,
+                };
+            } else {
+                // If the product with the given product_id does not exist, add it to the mergedProducts object
+                mergedProducts[cartItem.product_id] = {...cartItem};
+            }
+        }
+
+        // Convert the mergedProducts object back to an array
+        return Object.values(mergedProducts);
+    };
 }
 
 export class CheckoutSystem {
@@ -149,7 +191,7 @@ export class CheckoutSystem {
 
                 case 'Bundle deal':
                     // Apply bulk discount for Super iPad
-                    return cartItem.quantity >= 4 ?cartItem. quantity * parseFloat(rule.price_detail || '0') : cartItem.quantity * cartItem.unit_price;
+                    return cartItem.quantity >= 4 ? cartItem.quantity * parseFloat(rule.price_detail || '0') : cartItem.quantity * cartItem.unit_price;
 
                 // Add other cases for different pricing rules as needed
 
