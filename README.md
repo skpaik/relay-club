@@ -51,3 +51,14 @@ You can use the project in both logged in or logged out state.
 - Cart Page: You can see the list of items added to cart
   - If you add `mbp` product then automatically a `vga` product will add to cart
 - You can clear the cart by click `Clear cart` button for test purpose
+
+### UI
+Product Page
+
+![Product Page](docs/screenshots/product_list.png)
+
+---
+
+Cart Page
+
+![Product Page](docs/screenshots/cart_1.png)
