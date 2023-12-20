@@ -150,6 +150,22 @@ export interface definitions {
     /** Format: text */
     user_id?: string;
   };
+  pricing_rules: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: string;
+    /** Format: timestamp with time zone */
+    sku: string;
+    /** Format: text */
+    rule_type: string;
+    /** Format: text */
+    rule_details: string;
+    /** Format: number */
+    price_detail: number;
+  };
 }
 
 export interface parameters {

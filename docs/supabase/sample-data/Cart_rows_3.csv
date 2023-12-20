@@ -1,0 +1,4 @@
+id,created_at,sku,name,quantity,unit_price,total_price,user_id,product_id
+44,2023-12-20 21:04:14.008376+00,mbp,MacBook Pro,1,1399.99,,cda07575-0452-4307-877f-9d6d3bfe9448,5
+45,2023-12-20 21:04:18.457975+00,vga,VGA adapter,1,30,,cda07575-0452-4307-877f-9d6d3bfe9448,7
+46,2023-12-20 21:04:22.83125+00,ipd,Super iPad,1,549.99,,cda07575-0452-4307-877f-9d6d3bfe9448,4

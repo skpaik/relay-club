@@ -1,47 +1,78 @@
-import { AuthSession, User } from '@supabase/supabase-js'
-import { supabase } from '../utils/supabaseClient'
-import { useEffect, useState } from "react";
-import { definitions } from "../types/supabase";
+import {User} from '@supabase/supabase-js'
+import {useEffect, useState} from "react";
+//import {SampleData} from "../src/sample_data";
+import {Cart, PricingRule, SbSessionProps} from "@/src/models";
+import {CheckoutSystem} from "@/src/CheckoutSystem";
+import {supabase} from '@/utils/supabaseClient'
+import Router from "next/router";
 
-export interface Props {
-    session: AuthSession
-}
 
-export interface Cart {
-    id: string
-    sku: string;
-    /** Format: text */
-    name: string;
-    /** Format: number */
-    quantity: number;
-    /** Format: number */
-    unit_price: number;
-    /** Format: number */
-    total_price?: number;
-    /** Format: text */
-    user_id?: string;
-}
-
-export function CartForm({session}: Props) {
-    const user: User | null = session?.user;
-    const [cartItems, setCartItems] = useState<Cart[] | null>(null)
+export function CartForm({session}: SbSessionProps) {
+    const user: User | null | undefined = session?.user;
+    const [offerApplied, setOfferApplied] = useState<string[]>([])
+    const [cartItems, setCartItems] = useState<Cart[]>([])
     const [errorMessage, setErrorMessage] = useState('')
     const [subTotal, setSubTotal] = useState<number>(0)
     const [discount, setDiscount] = useState<number>(0)
     const [total, setTotal] = useState<number>(0)
 
-    console.log(user);
-
 
     useEffect(() => {
+        if (cartItems.length == 0) return;
+
         (async function () {
             try {
-                const subTotal=cartItems?.reduce((sum, item)=>sum+item.quantity*item.unit_price, 0);
-                const discount=109.5;
+                let pricing_rules_data: PricingRule[] | null = [];
+                //let pricing_rules_data: PricingRule[] | null = new SampleData().pricing_rules_data;
 
-                setSubTotal(subTotal);
-                setDiscount(discount);
-                setTotal(subTotal-discount);
+
+                let sku_list: string[] = cartItems.map(item => item.sku);
+
+
+
+
+                const {data, error, status} = await supabase
+                    .from<PricingRule>('PricingRule')
+                    .select(`*`)
+                    .in('sku', sku_list);
+
+
+
+                if (error && status !== 406) {
+                    throw error
+                }
+
+                pricing_rules_data = data;
+                if (pricing_rules_data) {
+                    //setCartItems(data)
+                }
+
+
+                const checkoutSystem = new CheckoutSystem(pricing_rules_data);
+
+                let sub_total: number = 0;
+
+                cartItems.forEach((cartItem, index, array) => {
+                    //const new_price = checkoutSystem.applyPricingRule(cartItem.sku, cartItem.unit_price, cartItem.quantity);
+                    checkoutSystem.scan(cartItem);
+                    sub_total += cartItem.quantity * cartItem.unit_price;
+                });
+
+                const new_price_sum = checkoutSystem.applyPricingRules();
+
+                //const sub_total = cartItems.reduce((sum, item) => sum + item.quantity * item.unit_price, 0);
+
+                if (sub_total) setSubTotal(sub_total);
+                setDiscount(sub_total - new_price_sum);
+                setTotal(new_price_sum);
+
+                setOfferApplied(checkoutSystem.get_offer_applied());
+
+                const get_cart_items = checkoutSystem.get_cart_items();
+
+                if (get_cart_items.length != cartItems.length) {
+                    setCartItems(get_cart_items);
+                }
             } catch (error: any) {
                 //setError(error)
             } finally {
@@ -50,22 +81,32 @@ export function CartForm({session}: Props) {
         })()
     }, [cartItems])
 
+
     useEffect(() => {
         (async function () {
+            let user_id = user?.id;
+
+            if (!user_id) {
+                let user_id_local = localStorage.getItem("user_id");
+                if (user_id_local) {
+                    user_id = user_id_local;
+                }
+            }
+
             try {
                 const {data, error, status} = await supabase
-                    .from<definitions['cart']>('Cart')
+                    .from<Cart>('Cart')
                     .select(`*`)
-                    .eq('user_id', user?.id);
+                    .eq('user_id', user_id);
 
-                console.log(data);
 
                 if (error && status !== 406) {
                     throw error
                 }
 
                 if (data) {
-                    setCartItems(data)
+                    setCartItems(new CheckoutSystem([]).mergeCartItems(data))
+                    //setCartItems(data)
                 }
             } catch (error: any) {
                 //setError(error)
@@ -74,7 +115,17 @@ export function CartForm({session}: Props) {
             }
         })()
     }, [])
-
+    const handleClearCart = async () => {
+        cartItems.forEach((cartItem, index, array) => {
+            (async function () {
+                await supabase
+                    .from('Cart')
+                    .delete()
+                    .eq('id', cartItem.id)
+            })()
+        });
+        await Router.push('/products');
+    }
     return (
         <div className="min-h-screen bg-gray-900 text-gray-300">
             <div className="container mx-auto p-6 sm:p-12 space-y-4 divide-y ">
@@ -82,7 +133,7 @@ export function CartForm({session}: Props) {
                     <h2 className="text-5xl md:text-6xl font-extrabold text-white mb-6">My cart items</h2>
                 </div>
                 <ul className="flex flex-col pt-4 space-y-2">
-                    {cartItems?.map((item, index) => (
+                    {cartItems.map((item, index) => (
                         <li key={index} className="flex items-start justify-between">
                             <h3>
                                 {item.name}
@@ -90,7 +141,7 @@ export function CartForm({session}: Props) {
                                 {item.quantity}
                             </h3>
                             <div className="text-right">
-                                <span className="block">$${(item.unit_price * item.quantity).toFixed(2)}</span>
+                                <span className="block">${(item.unit_price * item.quantity).toFixed(2)}</span>
                                 <span className="text-sm text-gray-400">à ${item.unit_price.toFixed(2)}</span>
                             </div>
                         </li>
@@ -106,16 +157,18 @@ export function CartForm({session}: Props) {
                             <span>Discount</span>
                             <span>-${discount.toFixed(2)}</span>
                         </div>
-                        <div className="flex items-center space-x-2 text-xs">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-                                 className="w-3 h-3 mt-1 fill-current text-violet-400">
-                                <path
-                                    d="M485.887,263.261,248,25.373A31.791,31.791,0,0,0,225.373,16H64A48.055,48.055,0,0,0,16,64V225.078A32.115,32.115,0,0,0,26.091,248.4L279.152,486.125a23.815,23.815,0,0,0,16.41,6.51q.447,0,.9-.017a23.828,23.828,0,0,0,16.79-7.734L486.581,296.479A23.941,23.941,0,0,0,485.887,263.261ZM295.171,457.269,48,225.078V64A16.019,16.019,0,0,1,64,48H225.373L457.834,280.462Z"></path>
-                                <path
-                                    d="M148,96a52,52,0,1,0,52,52A52.059,52.059,0,0,0,148,96Zm0,72a20,20,0,1,1,20-20A20.023,20.023,0,0,1,148,168Z"></path>
-                            </svg>
-                            <span className="text-gray-400">Spend $20.00, get 20% off</span>
-                        </div>
+                        {offerApplied.map((item, index) => (
+                            <div key={index} className="flex items-center space-x-2 text-xs">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+                                     className="w-3 h-3 mt-1 fill-current text-violet-400">
+                                    <path
+                                        d="M485.887,263.261,248,25.373A31.791,31.791,0,0,0,225.373,16H64A48.055,48.055,0,0,0,16,64V225.078A32.115,32.115,0,0,0,26.091,248.4L279.152,486.125a23.815,23.815,0,0,0,16.41,6.51q.447,0,.9-.017a23.828,23.828,0,0,0,16.79-7.734L486.581,296.479A23.941,23.941,0,0,0,485.887,263.261ZM295.171,457.269,48,225.078V64A16.019,16.019,0,0,1,64,48H225.373L457.834,280.462Z"></path>
+                                    <path
+                                        d="M148,96a52,52,0,1,0,52,52A52.059,52.059,0,0,0,148,96Zm0,72a20,20,0,1,1,20-20A20.023,20.023,0,0,1,148,168Z"></path>
+                                </svg>
+                                <span className="text-gray-400">{item}</span>
+                            </div>
+                        ))}
                     </div>
                 </div>
                 <div className="pt-4 space-y-2">
@@ -125,8 +178,12 @@ export function CartForm({session}: Props) {
                             <span className="font-semibold">$ {total.toFixed(2)}</span>
                         </div>
                         <button type="button"
-                                className="w-full py-2 font-semibold border rounded bg-violet-400 text-gray-900 border-violet-400">Go
-                            to checkout
+                                className="w-full py-2 font-semibold border rounded bg-violet-400 text-gray-900 border-violet-400">
+                            Go to checkout
+                        </button>
+                        <button type="button" onClick={handleClearCart}
+                                className="w-full py-2 font-semibold border rounded bg-violet-400 text-gray-900 border-violet-400">
+                            Clear cart
                         </button>
                     </div>
                 </div>

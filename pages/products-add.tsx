@@ -1,13 +1,15 @@
 import { Layout } from '@/components/Layout'
-import { CartForm } from '@/components/CartForm'
+import { ProductsAddForm } from '@/components/ProductsAddForm'
 import { useSession } from '@/utils/hooks/useSession'
 
-export default function CartPage() {
+export default function ProductsPage() {
   const session = useSession()
+
+  if (!session) return null
 
   return (
     <Layout session={session}>
-      <CartForm session={session} />
+      <ProductsAddForm session={session} />
     </Layout>
   )
 }
