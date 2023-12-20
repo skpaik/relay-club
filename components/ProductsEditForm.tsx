@@ -1,11 +1,11 @@
 import {User} from '@supabase/supabase-js'
 import {useEffect, useState} from "react";
 import Router, {useRouter} from 'next/router'
-import {Product, SbSessionProps} from "./models";
+import {Product, SbSessionProps} from "../src/models";
 import {supabase} from '../utils/supabaseClient'
 
 export function ProductsEditForm({session}: SbSessionProps) {
-    const user: User | null = session?.user;
+    const user: User | null | undefined = session?.user;
 
     const router = useRouter()
 
@@ -60,7 +60,7 @@ export function ProductsEditForm({session}: SbSessionProps) {
                 Router.push('/products');
             }
         } catch (error) {
-            console.error('Error updating product:', error.message);
+            console.error('Error updating product:', error);
         }
     };
     return (

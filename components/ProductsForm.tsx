@@ -1,12 +1,12 @@
 import {User} from '@supabase/supabase-js'
 import {useEffect, useState} from "react";
-import {Cart, Product, SbSessionProps} from "./models";
+import {Cart, Product, SbSessionProps} from "../src/models";
 import {supabase} from '../utils/supabaseClient'
 import Link from "next/link";
 
 
 export function ProductsForm({session}: SbSessionProps) {
-    const user: User | null = session?.user;
+    const user: User | null | undefined = session?.user;
     const [productList, setProductList] = useState<Product[]>([]);
     const [cartAddStatus, setCartAddStatus] = useState(false);
     const [currentProduct, setCurrentProduct] = useState<Product>();
@@ -75,7 +75,7 @@ export function ProductsForm({session}: SbSessionProps) {
             }
         } catch (error) {
             setCartAddStatus(false);
-            console.error('Error adding product to cart:', error.message);
+            console.error('Error adding product to cart:', error);
         }
     };
     return (

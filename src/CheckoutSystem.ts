@@ -1,11 +1,11 @@
 import {Cart, PricingRule} from "./models";
 
-export class CheckoutSystem2 {
-    private pricingRules: PricingRule[] = [];
+export class CheckoutSystem {
+    private pricingRules: PricingRule[] | null = [];
     private cart: Cart[] = [];
     private offerApplied: string[] = [];
 
-    constructor(pricingRules: PricingRule[]) {
+    constructor(pricingRules: PricingRule[] | null) {
         this.pricingRules = pricingRules;
     }
 
@@ -32,7 +32,7 @@ export class CheckoutSystem2 {
 
         // Iterate through the cart and apply pricing rules
         this.cart.forEach((cartItem) => {
-            const rule = this.pricingRules.find((r) => r.sku === cartItem.sku);
+            const rule = this.pricingRules?.find((r) => r.sku === cartItem.sku);
 
             console.log("\n\nrule")
             console.log(rule)
@@ -139,7 +139,7 @@ export class CheckoutSystem2 {
     };
 }
 
-export class CheckoutSystem {
+export class CheckoutSystem3 {
     private pricingRules: PricingRule[] = [];
 
     constructor(pricingRules: PricingRule[]) {

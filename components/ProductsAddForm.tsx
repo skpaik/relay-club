@@ -1,11 +1,11 @@
 import {User} from '@supabase/supabase-js'
 import {useState} from "react";
 import Router from 'next/router'
-import {Product, SbSessionProps} from "./models";
+import {Product, SbSessionProps} from "../src/models";
 import {supabase} from '../utils/supabaseClient'
 
 export function ProductsAddForm({session}: SbSessionProps) {
-    const user: User | null = session?.user;
+    const user: User | null | undefined = session?.user;
 
     console.log("\nuser?.id: " + user?.id);
     const [productName, setProductName] = useState('');
@@ -31,7 +31,7 @@ export function ProductsAddForm({session}: SbSessionProps) {
                 Router.push('/products');
             }
         } catch (error) {
-            console.error('Error adding product:', error.message);
+            console.error('Error adding product:', error);
         }
     };
     return (

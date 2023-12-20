@@ -1,9 +1,10 @@
 import {User} from '@supabase/supabase-js'
 import {useEffect, useState} from "react";
-import {SampleData} from "./sample_data";
-import {Cart, PricingRule, SbSessionProps} from "./models";
-import {CheckoutSystem2} from "./CheckoutSystem";
+//import {SampleData} from "../src/sample_data";
+import {Cart, PricingRule, SbSessionProps} from "../src/models";
+import {CheckoutSystem} from "../src/CheckoutSystem";
 import {supabase} from '../utils/supabaseClient'
+import Router from "next/router";
 
 
 export function CartForm({session}: SbSessionProps) {
@@ -22,8 +23,8 @@ export function CartForm({session}: SbSessionProps) {
 
         (async function () {
             try {
-                //let pricing_rules_data: PricingRule[] | null = [];
-                let pricing_rules_data: PricingRule[] | null = new SampleData().pricing_rules_data;
+                let pricing_rules_data: PricingRule[] | null = [];
+                //let pricing_rules_data: PricingRule[] | null = new SampleData().pricing_rules_data;
 
                 console.log("cartItems");
                 console.log(cartItems);
@@ -53,7 +54,7 @@ export function CartForm({session}: SbSessionProps) {
                 }
 
 
-                const checkoutSystem = new CheckoutSystem2(pricing_rules_data);
+                const checkoutSystem = new CheckoutSystem(pricing_rules_data);
 
                 let sub_total: number = 0;
 
@@ -145,7 +146,7 @@ export function CartForm({session}: SbSessionProps) {
                     .eq('id', cartItem.id)
             })()
         });
-
+        await Router.push('/products');
     }
     return (
         <div className="min-h-screen bg-gray-900 text-gray-300">
