@@ -11,7 +11,6 @@ export function ProductsForm({session}: SbSessionProps) {
     const [cartAddStatus, setCartAddStatus] = useState(false);
     const [currentProduct, setCurrentProduct] = useState<Product>();
 
-    console.log("\nuser?.id: " + user?.id);
 
     useEffect(() => {
         (async function () {
@@ -20,7 +19,6 @@ export function ProductsForm({session}: SbSessionProps) {
                     .from<Product>('Product')
                     .select(`*`);
 
-                console.log(data);
 
                 if (error && status !== 406) {
                     throw error
@@ -70,8 +68,6 @@ export function ProductsForm({session}: SbSessionProps) {
                 console.error('Error adding product to cart:', error);
             } else {
                 setCartAddStatus(true);
-                console.log('Product added to cart successfully:', data);
-                //Router.push('/cart');
             }
         } catch (error) {
             setCartAddStatus(false);

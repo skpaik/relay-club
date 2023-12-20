@@ -41,8 +41,9 @@ export class CheckoutSystem {
                 switch (rule.rule_type) {
                     case '3 for 2 deal':
                         // Apply 3 for 2 deal for Apple TV
+                        console.log("\n\n3 for 2 deal")
                         const discountedQuantity = Math.floor(cartItem.quantity / 3) * 2 + (cartItem.quantity % 3);
-                        totalPrice = discountedQuantity * cartItem.unit_price;
+                        totalPrice += discountedQuantity * cartItem.unit_price;
                         this.set_offer_applied(rule.rule_details)
                         break;
 

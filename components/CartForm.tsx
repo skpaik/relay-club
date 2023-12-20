@@ -118,8 +118,8 @@ export function CartForm({session}: SbSessionProps) {
                 }
 
                 if (data) {
-                    //setCartItems(new CheckoutSystem2([]).mergeCartItems(data))
-                    setCartItems(data)
+                    setCartItems(new CheckoutSystem([]).mergeCartItems(data))
+                    //setCartItems(data)
                 }
             } catch (error: any) {
                 //setError(error)
