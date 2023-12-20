@@ -204,7 +204,7 @@ export function CartForm({session}: SbSessionProps) {
                         </button>
                         <button type="button" onClick={handleClearCart}
                                 className="w-full py-2 font-semibold border rounded bg-violet-400 text-gray-900 border-violet-400">
-                            Clear checkout
+                            Clear cart
                         </button>
                     </div>
                 </div>
