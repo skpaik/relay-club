@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {SampleData} from "./sample_data";
 import {Cart, PricingRule, SbSessionProps} from "./models";
 import {CheckoutSystem2} from "./CheckoutSystem";
+import {supabase} from '../utils/supabaseClient'
 
 
 export function CartForm({session}: SbSessionProps) {
@@ -32,7 +33,7 @@ export function CartForm({session}: SbSessionProps) {
                 console.log(sku_list);
                 console.log(pricing_rules_data);
 
-                /*
+
                 const {data, error, status} = await supabase
                     .from<PricingRule>('PricingRule')
                     .select(`*`)
@@ -45,10 +46,10 @@ export function CartForm({session}: SbSessionProps) {
                     throw error
                 }
 
-                pricing_rules_data=data;
+                pricing_rules_data = data;
                 if (pricing_rules_data) {
                     //setCartItems(data)
-                }*/
+                }
 
                 const checkoutSystem = new CheckoutSystem2(pricing_rules_data);
 
@@ -67,12 +68,12 @@ export function CartForm({session}: SbSessionProps) {
                 if (sub_total) setSubTotal(sub_total);
                 setDiscount(sub_total - new_price_sum);
                 setTotal(new_price_sum);
-                 console.log("subTotal");
-                 console.log(subTotal);
-                 console.log("discount");
-                 console.log(discount);
-                 console.log("total");
-                 console.log(total);
+                console.log("subTotal");
+                console.log(subTotal);
+                console.log("discount");
+                console.log(discount);
+                console.log("total");
+                console.log(total);
                 const get_cart_items = checkoutSystem.get_cart_items();
                 //console.log(get_cart_items);
                 if (get_cart_items.length != cartItems.length) {
@@ -86,7 +87,7 @@ export function CartForm({session}: SbSessionProps) {
         })()
     }, [cartItems])
 
-    /*
+
     useEffect(() => {
         (async function () {
             try {
@@ -111,12 +112,12 @@ export function CartForm({session}: SbSessionProps) {
             }
         })()
     }, [])
-    */
 
-    useEffect(() => {
-        const sample_data_: Cart[] = new SampleData().cart_data;
-        setCartItems(sample_data_)
-    }, [])
+    /*    useEffect(() => {
+            const sample_data_: Cart[] = new SampleData().cart_data;
+            setCartItems(sample_data_)
+        }, [])
+        */
 
     return (
         <div className="min-h-screen bg-gray-900 text-gray-300">
