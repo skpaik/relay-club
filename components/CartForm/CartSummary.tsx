@@ -1,8 +1,8 @@
 // components/CartForm/CartSummary.tsx
 import React, {useEffect, useState} from "react";
-import {Cart} from "@/src/models";
-import {CheckoutSystemService} from "@/src/services/CheckoutSystemService";
-import {PriceRuleService} from "@/src/services/PriceRuleService";
+import {Cart} from "../../src/models";
+import {CheckoutSystemService} from "../../src/services/CheckoutSystemService";
+import {PriceRuleService} from "../../src/services/PriceRuleService";
 
 interface CartSummaryProps {
     cartItems: Cart[];

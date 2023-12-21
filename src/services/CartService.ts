@@ -28,7 +28,7 @@ export class CartService {
             return supabase
                 .from('Cart')
                 .delete()
-                .eq('id', cartItem.id);
+                .eq('sku', cartItem.sku);
         });
 
         await Promise.all(deletePromises);

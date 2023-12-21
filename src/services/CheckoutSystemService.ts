@@ -36,7 +36,6 @@ export class CheckoutSystemService {
         this.cart.forEach((cartItem) => {
             const rule = this.pricingRules?.find((r) => r.sku === cartItem.sku);
 
-
             if (rule) {
                 switch (rule.rule_type) {
                     case '3 for 2 deal':
@@ -60,7 +59,6 @@ export class CheckoutSystemService {
                     case 'Bundle deal':
                         // Apply bundle deal for MacBook Pro
 
-
                         if (cartItem.sku === 'mbp') {
                             totalPrice += cartItem.unit_price;
 
@@ -69,7 +67,6 @@ export class CheckoutSystemService {
                             const vgaAdapterInCart = this.cart.find(cartItem => {
                                 return cartItem.sku === 'vga'
                             });
-
 
                             if (!vgaAdapterInCart) {
                                 // Add the free VGA adapter to the cart
@@ -88,6 +85,7 @@ export class CheckoutSystemService {
                             // For other products, simply add the regular price to the total
                             totalPrice += cartItem.unit_price;
                         }
+
                         this.set_offer_applied(rule.rule_details)
 
                         break;

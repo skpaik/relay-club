@@ -1,8 +1,9 @@
 // __tests__/ProductList.test.tsx
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom'; // Import Jest-DOM extension
-import {SampleData} from "@/src/sample_data";
-import ProductList from "@/components/ProductList";
+import React from 'react';
+import {SampleData} from "../src/sample_data";
+import ProductList from "../components/ProductList";
 
 
 describe('ProductList Component', () => {
