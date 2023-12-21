@@ -14,6 +14,11 @@ export function Menu({ session }: Props) {
       {session ? (
         <>
           <li>
+            <Link href={"/products-add"} className="btn-link">
+              Add products
+            </Link>
+          </li>
+          <li>
             <Link href="/products" className="btn-link">Products</Link>
           </li>
           <li>

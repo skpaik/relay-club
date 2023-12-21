@@ -74,57 +74,44 @@ export function ProductsForm({session}: SbSessionProps) {
     };
 
     return (
-        <div className="min-h-screen bg-gray-900 text-gray-300">
-            <div className="container mx-auto p-6 space-y-4 divide-y ">
-                <div className="flex justify-between items-start">
-                    <h2 className="text-5xl md:text-6xl font-extrabold text-white mb-6">Products</h2>
-                    {user &&
-                        <a href={"/products-add"}
-                           className="text-2xl md:text-1xl font-extrabold text-white mb-6">Add
-                            products
-                        </a>
-                    }
+        <div className="min-h-screen bg-white p-8">
+            <h2 className="text-3xl font-semibold mb-6">Products</h2>
+            {cartAddStatus &&
+                <div role="alert" className="alert alert-success mb-4">
+                    <span>{currentProduct?.name} added to cart successfully.</span>
+                    <br/>
+                    <br/>
+                    <a className={'btn'} href={"/cart"}>Go to cart</a>
                 </div>
-                {cartAddStatus &&
-                    <div role="alert" className="alert alert-success">
-                        <span>{currentProduct?.name} added to cart successfully.</span>
-                        <br/>
-                        <br/>
-                        <a className={'btn'} href={"/cart"}>Go to cart</a>
-                    </div>
-                }
-                <ul className="flex flex-col pt-4 space-y-2">
-                    {productList.map((item, index) => (
-                        <div key={index}
-                             className="w-full min-w-80 max-w-prose bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                            <div className="px-5 pb-5 mt-4">
-                                <a href="#">
-                                    <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                                        {item.name}
-                                    </h5>
-                                </a>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-3xl font-bold text-gray-900 dark:text-white">
-                                        ${item.price.toFixed(2)}
-                                    </span>
-                                    {user &&
-                                        <Link href={{pathname: '/products-edit', query: {id: item.id}}} className="btn">
-                                            Edit
-                                        </Link>
-                                    }
-                                    {user &&
-                                        <button className="btn" onClick={() => handleDeleteProduct(item)}>
-                                            Delete
+            }
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {productList.map((item, index) => (
+                    <div>
+                        <div className="max-w-sm rounded overflow-hidden shadow-lg">
+                            <div className="px-6 py-4">
+                                <div className="font-bold text-xl mb-2">{item.name}</div>
+                                <p className="text-gray-700 text-base">
+                                    $ {item.price.toFixed(2)}
+                                </p>
+                            </div>
+                            <div className="px-6 pt-4 pb-2">
+                                {user &&
+                                    <div>
+                                        <Link href={{pathname: '/products-edit', query: {id: item.id}}}
+                                              className="btn inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"> Edit</Link>
+                                        <button onClick={() => handleDeleteProduct(item)}
+                                                className="btn inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Delete
                                         </button>
-                                    }
-                                    <button className="btn" onClick={() => handleAddToCart(item)}>
-                                        Add to cart
-                                    </button>
-                                </div>
+                                    </div>
+                                }
+                                <button onClick={() => handleAddToCart(item)}
+                                        className="btn inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                                    Add to cart
+                                </button>
                             </div>
                         </div>
-                    ))}
-                </ul>
+                    </div>
+                ))}
             </div>
         </div>
     )
