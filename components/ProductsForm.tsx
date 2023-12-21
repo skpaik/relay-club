@@ -74,6 +74,25 @@ export function ProductsForm({session}: SbSessionProps) {
             console.error('Error adding product to cart:', error);
         }
     };
+
+    const handleDeleteProduct = async (item: Product) => {
+        try {
+            const { error } = await supabase
+                .from('Product')
+                .delete()
+                .eq('id', item.id);
+
+            if (!error){
+                const productListFiltered = productList.filter(function( obj ) {
+                    return obj.id !== item.id;
+                });
+                setProductList(productListFiltered);
+            }
+        } catch (error) {
+            console.error('Error adding product to cart:', error);
+        }
+    };
+
     return (
         <div className="min-h-screen bg-gray-900 text-gray-300">
             <div className="container mx-auto p-6  space-y-4 divide-y ">
@@ -97,7 +116,7 @@ export function ProductsForm({session}: SbSessionProps) {
                 <ul className="flex flex-col pt-4 space-y-2">
                     {productList.map((item, index) => (
                         <div key={index}
-                             className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                             className="w-full min-w-80 max-w-prose bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                             <div className="px-5 pb-5 mt-4">
                                 <a href="#">
                                     <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
@@ -112,6 +131,11 @@ export function ProductsForm({session}: SbSessionProps) {
                                         <Link href={{pathname: '/products-edit', query: {id: item.id}}} className="btn">
                                             Edit
                                         </Link>
+                                    }
+                                    {user &&
+                                        <button className="btn" onClick={() => handleDeleteProduct(item)}>
+                                            Delete
+                                        </button>
                                     }
                                     <button className="btn" onClick={() => handleAddToCart(item)}>
                                         Add to cart
