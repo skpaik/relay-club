@@ -1,5 +1,6 @@
 import { ChangeEventHandler, useEffect, useState } from 'react'
 import { supabase } from '@/utils/supabaseClient'
+import React from 'react'
 
 export interface Props {
   url: string
