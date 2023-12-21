@@ -1,8 +1,8 @@
 // components/CartForm/CartSummary.tsx
 import React, {useEffect, useState} from "react";
-import {Cart} from "@/src/models";
-import {CheckoutSystemService} from "@/src/services/CheckoutSystemService";
-import {PriceRuleService} from "@/src/services/PriceRuleService";
+import {Cart} from "../../src/models";
+import {CheckoutSystemService} from "../../src/services/CheckoutSystemService";
+import {PriceRuleService} from "../../src/services/PriceRuleService";
 
 interface CartSummaryProps {
     cartItems: Cart[];
@@ -61,12 +61,12 @@ const CartSummary: React.FC<CartSummaryProps> = ({cartItems}) => {
         <div className="pt-4 space-y-2">
             <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span>$ {subTotal.toFixed(2)}</span>
+                <span data-testid={"sub-total-price"}>$ {subTotal.toFixed(2)}</span>
             </div>
 
             <div className="flex justify-between">
                 <span>Discount</span>
-                <span>-${discount.toFixed(2)}</span>
+                <span data-testid={"discount-price"}>$ {discount.toFixed(2)}</span>
             </div>
 
             {offerApplied.map((item, index) => (
@@ -84,7 +84,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({cartItems}) => {
             <div className="space-y-6">
                 <div className="flex justify-between">
                     <span>Total</span>
-                    <span className="font-semibold">$ {total.toFixed(2)}</span>
+                    <span data-testid={"total-price"} className="font-semibold">$ {total.toFixed(2)}</span>
                 </div>
             </div>
         </div>

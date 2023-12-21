@@ -1,6 +1,6 @@
 // services/PriceRuleService.ts
-import {PricingRule} from "@/src/models";
-import {supabase} from "@/utils/supabaseClient";
+import {PricingRule} from "../../src/models";
+import {supabase} from "../../utils/supabaseClient";
 
 export class PriceRuleService {
     static async getPriceRuleItems(sku_list: string[]): Promise<PricingRule[]> {

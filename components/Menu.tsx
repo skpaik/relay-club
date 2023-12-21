@@ -2,6 +2,7 @@ import { AuthSession } from '@supabase/supabase-js'
 import Link from 'next/link'
 import Router from 'next/router'
 import { supabase } from '@/utils/supabaseClient'
+import React from 'react'
 
 export interface Props {
   session: AuthSession | null
@@ -12,6 +13,11 @@ export function Menu({ session }: Props) {
     <ul className="flex space-x-4">
       {session ? (
         <>
+          <li>
+            <Link href={"/products-add"} className="btn-link">
+              Add products
+            </Link>
+          </li>
           <li>
             <Link href="/products" className="btn-link">Products</Link>
           </li>

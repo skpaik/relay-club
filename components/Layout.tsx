@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { PropsWithChildren } from 'react'
 import { Menu } from './Menu'
 import { SbSessionProps} from "@/src/models";
+import React from 'react';
 
 export function Layout({ session, children }: PropsWithChildren<SbSessionProps>) {
   return (

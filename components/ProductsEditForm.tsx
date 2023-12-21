@@ -1,8 +1,8 @@
 import {User} from '@supabase/supabase-js'
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import Router, {useRouter} from 'next/router'
 import {Product, SbSessionProps} from "@/src/models";
-import {supabase} from '@/utils/supabaseClient'
+import {ProductService} from "@/src/services/ProductService";
 
 export function ProductsEditForm({session}: SbSessionProps) {
     const user: User | null | undefined = session?.user;
@@ -13,12 +13,9 @@ export function ProductsEditForm({session}: SbSessionProps) {
         const {id} = router.query;
         (async function () {
             try {
-                let {data: product, error} = await supabase
-                    .from('Product')
-                    .select("*")
-                    .eq('id', id).single();
+                let {data: product, error} = await ProductService.getProductById(id);
 
-                if (product){
+                if (product) {
                     setProductId(product.id);
                     setProductName(product.name);
                     setProductSku(product.sku);
@@ -33,8 +30,7 @@ export function ProductsEditForm({session}: SbSessionProps) {
         })()
     }, [])
 
-    console.log("\nuser?.id: " + user?.id);
-    const [productId, setProductId] = useState("");
+    const [productId, setProductId] = useState<number>(0);
     const [productName, setProductName] = useState('');
     const [productSku, setProductSku] = useState('');
     const [productPrice, setProductPrice] = useState('');
@@ -42,16 +38,15 @@ export function ProductsEditForm({session}: SbSessionProps) {
 
     const handleEditProduct = async () => {
         try {
-            const { data, error } = await supabase
-                .from('Product')
-                .update({
-                    name: productName,
-                    sku: productSku,
-                    price: parseFloat(productPrice),
-                    quantity: parseInt(productQuantity),
-                })
-                .eq('id', productId)
-                .select();
+            const product: Product = {
+                id: productId,
+                name: productName,
+                sku: productSku,
+                price: parseFloat(productPrice),
+                quantity: parseInt(productQuantity),
+            }
+
+            const {data, error} = await ProductService.updateProduct(product);
 
             if (error) {
                 console.error('Error updating product:', error);
@@ -64,42 +59,54 @@ export function ProductsEditForm({session}: SbSessionProps) {
         }
     };
     return (
-        <div className="min-h-screen bg-gray-900 text-gray-300">
-            <div className="container mx-auto p-6  space-y-4 divide-y ">
-                <div className="flex justify-between items-start">
-                    <h2 className="text-5xl md:text-6xl font-extrabold text-white mb-6">Edit product</h2>
+        <div className="min-h-screen flex items-center justify-center">
+            <div className="bg-white p-8 rounded shadow-md w-96">
+                <h2 className="text-2xl font-semibold mb-6">Edit Product</h2>
+                <div className="mb-4">
+                    <label htmlFor="productName" className="block text-sm font-medium text-gray-600">
+                        Product Name
+                    </label>
+                    <input value={productName}
+                           type="text" id="productName" name="productName"
+                           className="mt-1 p-2 w-full border rounded-md"
+                           onChange={(e) => setProductName(e.target.value)}/>
                 </div>
-                <ul className="flex flex-col pt-4 space-y-2">
-                    <li>
-                        <label>
-                            Product Name: <input type="text" value={productName}
-                                                 onChange={(e) => setProductName(e.target.value)}/>
-                        </label>
-                    </li>
-                    <li>
-                        <label>
-                            Product sku: <input type="text" value={productSku}
-                                                onChange={(e) => setProductSku(e.target.value)}/>
-                        </label>
-                    </li>
-                    <li>
-                        <label>
-                            Product price: <input type="text" value={productPrice}
-                                                  onChange={(e) => setProductPrice(e.target.value)}/>
-                        </label>
-                    </li>
-                    <li>
-                        <label>
-                            Product quantity: <input type="text" value={productQuantity}
-                                                     onChange={(e) => setProductQuantity(e.target.value)}/>
-                        </label>
-                    </li>
-                    <li>
-                        <button className="btn" onClick={handleEditProduct}>
-                            Update Product
-                        </button>
-                    </li>
-                </ul>
+                <div className="mb-4">
+                    <label htmlFor="productSku" className="block text-sm font-medium text-gray-600">
+                        Product Sku
+                    </label>
+                    <input value={productSku}
+                           type="text" id="productSku" name="productSku"
+                           className="mt-1 p-2 w-full border rounded-md"
+                           onChange={(e) => setProductSku(e.target.value)}/>
+                </div>
+
+                <div className="mb-4">
+                    <label htmlFor="productPrice" className="block text-sm font-medium text-gray-600">
+                        Product Price
+                    </label>
+                    <input type="text" value={productPrice}
+                           id="productPrice" name="productPrice"
+                           className="mt-1 p-2 w-full border rounded-md"
+                           onChange={(e) => setProductPrice(e.target.value)}/>
+                </div>
+
+                <div className="mb-6">
+                    <label htmlFor="productQuantity" className="block text-sm font-medium text-gray-600">
+                        Product Quantity
+                    </label>
+
+                    <input type="text" value={productQuantity}
+                           id="productQuantity" name="productQuantity"
+                           className="mt-1 p-2 w-full border rounded-md"
+                           onChange={(e) => setProductQuantity(e.target.value)}/>
+                </div>
+
+                <button type="submit" onClick={handleEditProduct}
+                        className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">
+                    Update Product
+                </button>
+
             </div>
         </div>
     )

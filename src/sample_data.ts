@@ -112,7 +112,7 @@ export class SampleData {
         "unit_price": 30,
         "total_price": null,
         "user_id": "cda07575-0452-4307-877f-9d6d3bfe9448",
-        "product_id": 7
+        "product_id": 8
     }, {
         id: 3,
         sku: "ipd",
@@ -121,7 +121,7 @@ export class SampleData {
         "unit_price": 549.99,
         "total_price": null,
         "user_id": "cda07575-0452-4307-877f-9d6d3bfe9448",
-        "product_id": 7
+        "product_id": 9
     }];
 
     cart_data_4: Cart[] = [{
@@ -273,7 +273,7 @@ export class SampleData {
         }
     ];
 
-    cart_data: Cart[] = this.cart_data_5;
+    cart_data: Cart[] = this.cart_data_3;
 
     pricing_rules_data: PricingRule[] = this.pricing_rules;
 }
