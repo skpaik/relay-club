@@ -47,10 +47,17 @@ You can use the project in both logged in or logged out state.
 
 - Products Page: Fow showing all products
     - You can add product to cart
-    - Logged in state you can add or edit product
+    - Logged in state you can add, edit and delete product
 - Cart Page: You can see the list of items added to cart
   - If you add `mbp` product then automatically a `vga` product will add to cart
 - You can clear the cart by click `Clear cart` button for test purpose
+
+### Tests
+
+In command line run
+```bash
+npm run test
+```
 
 ### UI
 Product Page
