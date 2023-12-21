@@ -12,7 +12,7 @@ const CartAction: React.FC<CartSummaryProps> = ({cartItems}) => {
     const handleClearCart = async () => {
         // Use CartService to clear the cart
         await CartService.clearCart(cartItems);
-        await Router.push("/products");
+        // await Router.push("/products");
     };
 
     return (

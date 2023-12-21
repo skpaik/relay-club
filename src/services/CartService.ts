@@ -1,7 +1,8 @@
 // services/CartService.ts
-import { Cart } from "@/src/models";
-import { supabase } from "@/utils/supabaseClient";
-import { CheckoutSystemService } from "@/src/services/CheckoutSystemService";
+import {Cart} from "@/src/models";
+import {supabase} from "@/utils/supabaseClient";
+import {CheckoutSystemService} from "@/src/services/CheckoutSystemService";
+
 export class CartService {
     static async getCartItems(userId: string | null | undefined): Promise<Cart[]> {
         if (!userId) {
@@ -23,13 +24,13 @@ export class CartService {
     }
 
     static async clearCart(cartItems: Cart[]): Promise<void> {
-        cartItems.forEach((cartItem, index, array) => {
-            (async function () {
-                await supabase
-                    .from('Cart')
-                    .delete()
-                    .eq('id', cartItem.id)
-            })()
+        const deletePromises = cartItems.map((cartItem) => {
+            return supabase
+                .from('Cart')
+                .delete()
+                .eq('id', cartItem.id);
         });
+
+        await Promise.all(deletePromises);
     }
 }

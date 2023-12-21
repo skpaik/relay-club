@@ -153,7 +153,7 @@ export class SampleData {
             "unit_price": 109.5,
             "total_price": null,
             "user_id": "cda07575-0452-4307-877f-9d6d3bfe9448",
-            "product_id": 7
+            "product_id": 2
         }, {
             id: 3,
             sku: "ipd",
@@ -273,7 +273,7 @@ export class SampleData {
         }
     ];
 
-    cart_data: Cart[] = this.cart_data_6;
+    cart_data: Cart[] = this.cart_data_5;
 
     pricing_rules_data: PricingRule[] = this.pricing_rules;
 }

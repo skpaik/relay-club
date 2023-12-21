@@ -1,14 +1,12 @@
 // __tests__/ProductList.test.tsx
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom'; // Import Jest-DOM extension
-import ProductList from '../components/ProductList';
+import {SampleData} from "@/src/sample_data";
+import ProductList from "@/components/ProductList";
+
 
 describe('ProductList Component', () => {
-    const mockProducts = [
-        { id: 1, name: 'Product 1' },
-        { id: 2, name: 'Product 2' },
-        { id: 3, name: 'Product 3' },
-    ];
+    const mockProducts = new SampleData().product_list;
 
     it('renders a list of products', () => {
         const { getByText } = render(<ProductList products={mockProducts} />);

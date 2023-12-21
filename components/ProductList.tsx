@@ -1,10 +1,6 @@
 // components/ProductList.tsx
 import React from 'react';
-
-interface Product {
-    id: number;
-    name: string;
-}
+import {Product} from "@/src/models";
 
 interface ProductListProps {
     products: Product[];
