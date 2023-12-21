@@ -42,4 +42,7 @@ export interface PricingRule {
     rule_details?: string;
     /** Format: number */
     price_detail?: string | null;
+    discountQuantity?: number | null;
+    discountPrice?: number | null;
+    freeVga?: boolean;
 }

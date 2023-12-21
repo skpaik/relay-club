@@ -1,4 +1,4 @@
-id,created_at,sku,rule_type,rule_details,price_detail
-1,2023-12-19 19:53:36.809547+00,atv,3 for 2 deal,"Buy 3 Apple TVs, pay the price of 2",
-2,2023-12-19 19:54:02.479333+00,ipd,Bulk discount,$499.99 each if more than 4 Super iPads,499.99
-3,2023-12-19 19:54:20.505515+00,mbp,Bundle deal,Free VGA adapter bundled with each MacBook Pro sold,
+id,created_at,sku,rule_type,rule_details,price_detail,discountQuantity,discountPrice,freeVga
+1,2023-12-19 19:53:36.809547+00,atv,3 for 2 deal,"Buy 3 Apple TVs, pay the price of 2",,,,false
+2,2023-12-19 19:54:02.479333+00,ipd,Bulk discount,$499.99 each if more than 4 Super iPads,499.99,4,499.99,false
+3,2023-12-19 19:54:20.505515+00,mbp,Bundle deal,Free VGA adapter bundled with each MacBook Pro sold,,,,true
