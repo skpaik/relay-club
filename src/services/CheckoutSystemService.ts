@@ -1,6 +1,6 @@
-import {Cart, PricingRule} from "./models";
+import { PricingRule, Cart } from "@/src/models";
 
-export class CheckoutSystem {
+export class CheckoutSystemService {
     private pricingRules: PricingRule[] | null = [];
     private cart: Cart[] = [];
     private offerApplied: string[] = [];
@@ -9,15 +9,17 @@ export class CheckoutSystem {
         this.pricingRules = pricingRules;
     }
 
+
+
     scan(item: Cart) {
         this.cart.push(item);
     }
 
-    get_cart_items(): Cart[] {
+    getCartItems(): Cart[] {
         return this.cart;
     }
 
-    get_offer_applied(): string[] {
+    getOfferApplied(): string[] {
         return this.offerApplied;
     }
 

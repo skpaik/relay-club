@@ -27,6 +27,9 @@ create table
                              rule_type character varying not null,
                              rule_details character varying null,
                              price_detail real null,
+                             discountQuantity real null,
+                             discountPrice real null,
+                             freeVga boolean not null,
                              constraint PricingRules_pkey primary key (id),
                              constraint PricingRules_id_key unique (id)
 ) tablespace pg_default;

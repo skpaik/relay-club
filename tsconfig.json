@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "types": [
+      "jest",
+      "@types/node"
+    ],
     "target": "es5",
     "lib": [
       "dom",
@@ -8,6 +12,7 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -15,8 +20,9 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "incremental": true,
+    "baseUrl": "./",
     "plugins": [
       {
         "name": "next"
