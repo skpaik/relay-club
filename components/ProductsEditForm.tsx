@@ -1,7 +1,7 @@
 import {User} from '@supabase/supabase-js'
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import Router, {useRouter} from 'next/router'
-import {Product, SbSessionProps} from "@/src/models";
+import {SbSessionProps} from "@/src/models";
 import {supabase} from '@/utils/supabaseClient'
 
 export function ProductsEditForm({session}: SbSessionProps) {

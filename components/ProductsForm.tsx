@@ -1,5 +1,5 @@
 import {User} from '@supabase/supabase-js'
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Cart, Product, SbSessionProps} from "@/src/models";
 import {supabase} from '@/utils/supabaseClient'
 import Link from "next/link";
