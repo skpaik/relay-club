@@ -43,16 +43,4 @@ describe('CartSummary Component', () => {
         expect(getByTestId('discount-price').textContent).toEqual("$ 0.00");
         expect(getByTestId('total-price').textContent).toEqual("$ 0.00");
     });
-
-    // it('renders offerApplied correctly', () => {
-    //     // Mock offerApplied array
-    //     const mockOfferApplied = ['Offer 1', 'Offer 2'];
-    //
-    //     const { getByText } = render(<CartSummary cartItems={mockCartItems} />);
-    //
-    //     mockOfferApplied.forEach((offer) => {
-    //         const offerElement = getByText(offer);
-    //         expect(offerElement).toBeInTheDocument();
-    //     });
-    // });
 });
