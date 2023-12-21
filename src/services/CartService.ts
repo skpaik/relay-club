@@ -33,4 +33,8 @@ export class CartService {
 
         await Promise.all(deletePromises);
     }
+
+    static async addToCart(cartItem: Cart) {
+        return await supabase.from('Cart').insert([cartItem,]);
+    }
 }

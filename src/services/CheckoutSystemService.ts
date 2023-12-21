@@ -1,4 +1,4 @@
-import { PricingRule, Cart } from "@/src/models";
+import {Cart, PricingRule} from "@/src/models";
 
 export class CheckoutSystemService {
     private pricingRules: PricingRule[] | null = [];
@@ -8,7 +8,6 @@ export class CheckoutSystemService {
     constructor(pricingRules: PricingRule[] | null) {
         this.pricingRules = pricingRules;
     }
-
 
 
     scan(item: Cart) {
